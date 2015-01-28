@@ -1,30 +1,30 @@
-<div>
-	<div class="col-md-4">
-		<h1><span class="library img-responsive img-rounded"></span></h1>
+<div ng-controller="MainController">
+	<div>
+		<div class="col-md-4">
+			<h1><span class="library img-responsive img-rounded"></span></h1>
+		</div>
+		<div class="col-md-8">
+		    <h2 translate="main.title">Documents search</h2>
+	        <p translate="main.subtitle">This is your homepage</p>
+	        <ul>
+	        	<li> <span translate="search.relevance.tf"> Term Frequency explained</span></li>
+	        	<li> <span translate="search.relevance.idf">Inversed Document Frequency explained</span></li>
+	        	<li> <span translate="search.relevance.fln">Field-length norm explained</span></li>
+	        </ul>
+		    <form class="form">
+		        <input type="text" id="query_terms" placeholder="{{'global.form.query_terms.placeholder' | translate}}" ng-model="query_terms" class="form-control"> 
+		    	<br>
+		    	<button type="submit" class="btn btn-primary" ng-click="search()" translate="search.form.button">Search</button>
+		    </form>
+		</div>
 	</div>
-	<div class="col-md-8" ng-controller="MainController">
-	    <h2 translate="main.title">Documents search</h2>
-        <p translate="main.subtitle">This is your homepage</p>
-        <ul>
-        	<li> <span translate="search.relevance.tf"> Term Frequency explained</span></li>
-        	<li> <span translate="search.relevance.idf">Inversed Document Frequency explained</span></li>
-        	<li> <span translate="search.relevance.fln">Field-length norm explained</span></li>
-        </ul>
-	    <form class="form">
-	        <input type="text" id="query_terms" placeholder="{{'global.form.query_terms.placeholder' | translate}}" ng-model="query_terms" class="form-control"> 
-	    	<br>
-	    	<button type="submit" class="btn btn-primary" ng-click="search()" translate="search.form.button">Search</button>
-	    </form>
-	    <div>
-		    <br>
-		    <p translate="search.nbhits" translate-values="{total: '{{ es_result.hits.total }}'}"> {{ es_result.hits.total }} are matching.</p>
-		    <br>
-		    <div ng-repeat="search_hit in es_result.hits.hits">
-		    	<b> {{ $index + 1 }} : {{ search_hit.fields["file.name"][0] }}</b>&nbsp; - score : <code>{{ search_hit._score }}</code>
-				<blockquote ng-repeat='a_quote in search_hit.highlight.file | unique'>
-		    		<span ng-bind-html='a_quote.replace(","," ").replace("\n","").replace("\t", " ")'></span>
-		    	</blockquote>
-		    </div>
-	    </div>
+	<div ng-if="es_result" class="voffset5">
+		<p class="lead" translate="search.nbhits" translate-values="{total: '{{ es_result.hits.total }}'}"> {{ es_result.hits.total }} are matching.</p>
+		<div ng-repeat="search_hit in es_result.hits.hits" class="voffset3">
+		    <b> {{ $index + 1 }} {{ search_hit.fields["file.title"][0] }} : </b> {{ search_hit.fields["file.name"][0] }}&nbsp; - score : <code>{{ search_hit._score }}</code>
+			<blockquote ng-repeat='a_quote in search_hit.highlight.file | unique'>
+		    	<span ng-bind-html='a_quote.replace(","," ").replace("\n","").replace("\t", " ")'></span>
+		    </blockquote>
+		</div>
 	</div>
 </div>

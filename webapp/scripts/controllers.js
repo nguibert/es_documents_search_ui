@@ -3,13 +3,16 @@
 /* Controllers */
 
 searchDocumentsApp.controller('MainController', function ($scope, $http, $location) {
+		$scope.hasResults=function() {
+			return (typeof $scope.es_result !== 'undefined') && $scope.es_result;
+		}
 		$scope.search=function () {
 			console.log("searching for documents with terms " + $scope.query_terms);
 			$http({
 					url : 'http://localhost:9200/filesystem/docs/_search',
 					method : 'POST',
 					data: {
-						  fields : ["name"],
+						  fields : ["name","title"],
 						  query : {
 						    query_string : {
 						      query : $scope.query_terms

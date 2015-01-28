@@ -74,8 +74,8 @@ Browser Upgrade Prompt
 
 .library {
     display: inline-block;
-    width: 347px;
-    height: 797px;
+    width: 325px;
+    height: 250px;
     background: url("../images/librarian.jpeg") no-repeat center top;
     background-size: contain;
 }
