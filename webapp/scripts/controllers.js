@@ -2,15 +2,12 @@
 
 /* Controllers */
 
-searchDocumentsApp.controller('MainController', function ($scope, $http, $location) {
-		$scope.hasResults=function() {
-			return (typeof $scope.es_result !== 'undefined') && $scope.es_result;
-		}
+searchDocumentsApp.controller('MainController', function ($scope, $http, $location, ELASTICSEARCH) {
 		$scope.search=function () {
 			console.log("searching for documents with terms " + $scope.query_terms);
 			$http({
-					url : 'http://localhost:9200/filesystem/docs/_search',
-					method : 'POST',
+					url : ELASTICSEARCH._url,
+					method : ELASTICSEARCH._protocol,
 					data: {
 						  fields : ["name","title"],
 						  query : {
@@ -20,14 +17,14 @@ searchDocumentsApp.controller('MainController', function ($scope, $http, $locati
 						  },
 						  highlight : {
 						    fields : {
-						      file : {fragment_size : 80, number_of_fragments : 5}
+						      file : {fragment_size : 120, number_of_fragments : 8}
 						    }
 						  }
 						}
 				}).success(function(data, status, headers, config) {
 						 console.log(data);
 						 $scope.es_result=data;
-					 }).error(function(data, status, headers, config) { 
+				}).error(function(data, status, headers, config) { 
 						 console.error('ERROR - HTTP' + status + " :\n" + data)
 			});
 		}

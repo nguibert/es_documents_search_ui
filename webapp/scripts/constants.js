@@ -1,12 +1,11 @@
 'use strict';
 
 /* Constants */
-
-searchDocumentsApp.constant('USER_ROLES', {
-        'all': '*',
-        'admin': 'ROLE_ADMIN',
-        'user': 'ROLE_USER'
+searchDocumentsApp.constant('ELASTICSEARCH', {
+        '_url': 'http://localhost:9200/filesystem/docs/_search', // contient l'index, le type, et l'action (_search) 
+        '_protocol' : 'POST'
     });
+
 
 /*
 Languages codes are ISO_639-1 codes, see http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
